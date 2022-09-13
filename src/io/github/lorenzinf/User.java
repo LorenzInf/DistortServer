@@ -2,21 +2,16 @@ package io.github.lorenzinf;
 
 public class User {
 
-    String name;
-    String ip;
-    int port;
+    private String ip;
+    private int port;
+    private String name;
+    private boolean isJoined;
 
-    public User(String ip, int port) {
+    public User(String ip, int port, String name) {
         this.ip = ip;
         this.port = port;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
+        isJoined = false;
     }
 
     public String getIp() {
@@ -33,5 +28,21 @@ public class User {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isJoined() {
+        return isJoined;
+    }
+
+    public void setJoined(boolean joined) {
+        isJoined = joined;
     }
 }
