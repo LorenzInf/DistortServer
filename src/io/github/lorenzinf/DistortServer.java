@@ -94,6 +94,8 @@ public class DistortServer extends io.github.lorenzinf.kago_util.Server {
         user.setName(name);
         if(user.isJoined()) {
             sendToJoined("CHANGED-NAME_" + ogName + "_" + user.getName());
+        } else {
+            send(pClientIP, pClientPort, "CHANGED-NAME_" + ogName + "_" + user.getName());
         }
         System.out.println("[INFO] " + ogName + " changed their name to " + user.getName());
     }
@@ -104,8 +106,8 @@ public class DistortServer extends io.github.lorenzinf.kago_util.Server {
         if(user.isJoined())
             send(pClientIP, pClientPort, "ERR_ALREADY-JOINED");
         else {
-            sendToJoined("JOINED_" + user.getName());
             user.setJoined(true);
+            sendToJoined("JOINED_" + user.getName());
         }
         System.out.println("[INFO] " + user.getName() + " joined the chat");
     }
@@ -116,7 +118,7 @@ public class DistortServer extends io.github.lorenzinf.kago_util.Server {
             send(pClientIP, pClientPort, "ERR_NOT-CONNECTED");
         else {
             sendToJoined("MESSAGE_" + user.getName() + "_" + message);
-            System.out.println("[INFO] A message was sent");
+            System.out.println("[INFO] The message \"" + message +"\" was sent");
         }
     }
 
@@ -125,8 +127,8 @@ public class DistortServer extends io.github.lorenzinf.kago_util.Server {
         if(!user.isJoined()) {
             send(pClientIP, pClientPort, "ERR_NOT-IN-ROOM");
         } else {
-            user.setJoined(false);
             sendToJoined("LEFT_" + user.getName());
+            user.setJoined(false);
         }
         System.out.println("[INFO] " + user.getName() + " left the chat");
     }
@@ -143,7 +145,7 @@ public class DistortServer extends io.github.lorenzinf.kago_util.Server {
                 send(pClientIP, pClientPort, "ERR_DUPLICATE-NAME");
             } else {
                 recipients.toFirst();
-                send(pClientIP, pClientPort, "DM_SENT");
+                send(pClientIP, pClientPort, "DM_SENT_" + user.getName() + "_" + message);
                 send(recipients.getContent().getIp(), recipients.getContent().getPort(), "DM_RECEIVED_" + user.getName() + "_" + message);
             }
         }
